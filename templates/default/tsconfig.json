@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "allowJs": false,
+    "sourceMap": true
+  }
+}

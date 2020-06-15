@@ -1,6 +1,6 @@
 import * as prompt from 'prompt';
 import * as shell from 'shelljs';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as colors from "colors/safe";
 import * as path from 'path';
 import { paramCase } from 'param-case';
@@ -29,13 +29,19 @@ export const create = (args, options, logger) => {
   logger.info('Please fill the following values…');
 
   prompt.start().get(variables, (err, result) => {
+    if (!result.name) {
+      logger.error('Please provide a valid name.');
+      process.exit(1);
+    }
     result.name = paramCase(result.name);
-    const localPath = path.join(process.cwd(), result.name);
+    const localPath = path.resolve(process.cwd(), result.name);
+    console.log('localpath: ', localPath);
 
     if (!fs.existsSync(localPath)) {
-      mkdirSync(localPath);
+      mkdirSync(localPath, { recursive: true });
     } else {
       logger.error(`The path ${localPath} already exists. Please choose a different name or delete the existing file or folder first.`);
+      process.exit(1);
     }
     // recursively copy template dir to working directory if the template directory exists
     if (fs.existsSync(templatePath)) {
@@ -48,15 +54,17 @@ export const create = (args, options, logger) => {
     }
 
     // Replace variable values in all files recursively
-    shell.ls('-Rl', '.').forEach(entry => {
-      if (entry.isFile()) {
+    shell.ls('-Rl', localPath).forEach((entry: any) => {
+      const fullPath = path.join(localPath, entry.name);
+      if (fs.statSync(fullPath).isFile()) {
         // Replace '[VARIABLE]` with the corresponding variable value from the prompt
         variables.forEach(variable => {
-          shell.sed('-i', `\\[${variable.toUpperCase()}\\]`, result[variable], entry.name);
+          shell.sed('-i', `\\[${variable.toUpperCase()}\\]`, result[variable], fullPath);
         });
 
         // Insert current year in files
-        shell.sed('-i', '\\[YEAR\\]', new Date().getFullYear(), entry.name);
+        // @ts-ignore
+        shell.sed('-i', '\\[YEAR\\]', new Date().getFullYear(), fullPath);
       }
     });
 

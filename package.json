@@ -1,6 +1,6 @@
 {
   "name": "redom-site-scaffolder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scaffolds a project that will use redom, Typescript, SASS and Webpack in order to serve a static website using hot-reload. Great for prototyping JavaScript games, UI tools, or other static applications.",
   "main": "dist/index.js",
   "scripts": {
@@ -14,12 +14,15 @@
   "license": "ISC",
   "dependencies": {
     "caporal": "^1.4.0",
+    "fs-extra": "^9.0.1",
     "param-case": "^3.0.3",
     "prompt": "^1.0.0",
     "shelljs": "^0.8.4"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.1",
     "@types/node": "^14.0.13",
+    "@types/shelljs": "^0.8.8",
     "redom": "^3.27.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"

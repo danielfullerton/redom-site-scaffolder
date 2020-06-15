@@ -38,6 +38,10 @@ In your working directory, you would now have a project folder "my-new-project".
     
 This will start your scaffolded project on http://localhost:4200. The project supports hot reload, so as you make changes, your browser will update in real-time.
 
+## Common Issues
+* If you receive an *eacces* error on Unix machines, please try to install and run the command without superuser privileges as these may affect the file editing process.
+* If the script hangs halfway through and you end up with a template with variables still in place (ex. "[NAME]") in certain files, please check the encasing directory permissions.  
+
 ## Built With
 
 * [Redom](https://redom.js.org/)
